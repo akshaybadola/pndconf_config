@@ -1,0 +1,217 @@
+\documentclass[$if(preprint)$preprint,$endif$$if(preview)$final,times,twocolumn,$endif$$if(fontsize)$$fontsize$,$endif$$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{elsarticle}
+
+%% Journal package if given
+$if(journal)$
+\usepackage{$journal$}
+$endif$
+
+%% Journal name
+$if(journalname)$
+\journal{$journalname$}
+$endif$
+
+%% Linestretch
+$if(linestretch)$
+\usepackage{setspace}
+\setstretch{$linestretch$}
+$endif$
+
+%% Caption
+$if(caption)$
+\usepackage{caption}
+$endif$
+
+%% Maths symbols
+\usepackage{bbm,amssymb,amsmath,amsfonts,amsthm}
+%\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+%\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{ifxetex,ifluatex}
+
+%% Line numbers
+$if(linenumbers)$
+\usepackage{lineno}
+$endif$
+
+%% Fonts and stuff
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+$if(euro)$
+\usepackage{eurosym}
+$endif$
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+
+%% tightlist
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+%% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+
+%% Don't use geometry
+%% $if(geometry)$
+%% \usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
+%% $endif$
+
+
+%% Use natbib with "elsarticle-num"
+\usepackage{natbib}
+\bibliographystyle{elsarticle-num}
+
+$if(listings)$
+\usepackage{listings}
+$endif$
+
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdftitle={$title-meta$},
+            colorlinks=true,
+            citecolor=$if(citecolor)$$citecolor$$else$blue$endif$,
+            urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
+            linkcolor=$if(linkcolor)$$linkcolor$$else$magenta$endif$,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+$if(links-as-notes)$
+% Make links footnotes instead of hotlinks:
+\renewcommand{\href}[2]{#2\footnote{\url{#1}}}
+$endif$
+$if(strikeout)$
+\usepackage[normalem]{ulem}
+% avoid problems with \sout in headers with hyperref:
+\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
+$endif$
+
+%% Not sure what this does
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+
+$if(verbatim-in-note)$
+\VerbatimFootnotes % allows verbatim text in footnotes
+$endif$
+
+% Document
+\begin{document}
+
+%% Front matter
+\begin{frontmatter}
+\title{$title$}
+
+%% affiliations is defined as a list of affiliation strings and inserted as is
+%% For now including full string in affiliation
+%% {organization, addresline (can be multiple), city, postcode, state, country}
+%% pandoc template cannot zip so it's difficult to define it programmatically
+$if(affiliations)$
+$for(affiliations)$
+\affiliation[$it.name$]{
+  department={$it.department$},
+  organization={$it.organization$},
+  addressline={$it.addressline$},
+  city={$it.city$},
+  postcode={$it.postcode$},
+  state={$it.state$},
+  country={$it.country$}
+}
+$endfor$
+$endif$
+
+%% Authors and affiliations are combined
+$if(author)$
+$for(author)$
+%% Each author in [aff]{author}\ead{mail@whatever} format
+\author[$author.affiliation$]{$author.name$}
+\ead{$author.email$}
+$endfor$
+$endif$
+
+%% Additional Includes
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+%% Research Highlights
+$if(research-highlights)$
+\begin{highlights}
+$for(research-highlights)$
+\item $research-highlights$
+$endfor$
+\end{highlights}
+$endif$
+
+%% Keywords
+$if(keywords)$
+\begin{keyword}
+$for(keywords)$
+$keywords$ \sep
+$endfor$
+\end{keyword}
+$endif$
+
+%% Abstract
+$if(abstract)$
+\begin{abstract}
+$abstract$
+\end{abstract}
+$endif$
+
+\end{frontmatter}
+
+%% Includes before main content
+$for(include-before)$
+$include-before$
+$endfor$
+
+$if(linenumbers)$
+\linenumbers
+$endif$
+
+%% Main body
+$body$
+
+%% Bibliography, only natbib for elsevier
+$if(bibliography)$
+\bibliography{$bibliography$}
+$endif$
+
+%% Post includes
+$for(include-after)$
+$include-after$
+$endfor$
+\end{document}
+\endinput
