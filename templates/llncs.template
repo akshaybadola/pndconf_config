@@ -67,7 +67,7 @@ $endif$
 
 %% Use natbib with "elsarticle-num"
 \usepackage{natbib}
-\bibliographystyle{elsarticle-num}
+\bibliographystyle{splncs04}
 
 $if(listings)$
 \usepackage{listings}
@@ -177,17 +177,19 @@ $endfor$
 \end{highlights}
 $endif$
 
+%% Title before abstract and keywords
+\maketitle
+
 %% Abstract
 $if(abstract)$
-\abstract{$abstract$}
+\abstract{$abstract$
+  %% Title before abstract and keywords in LLNCS
+  %% Keywords
+  $if(keywords)$
+  \keywords{$for(keywords)$$keywords$$sep$ \and $endfor$}
+  $endif$
+}
 $endif$
-
-%% Keywords
-$if(keywords)$
-\keywords{$for(keywords)$$keywords$,$endfor$}
-$endif$
-
-\maketitle
 
 %% Includes before main content
 $for(include-before)$
